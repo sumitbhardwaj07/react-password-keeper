@@ -4,6 +4,7 @@ import "./formInput.css";
 const FormInput = (props) => {
     const [enteredTitle,setEnteredTitle] = useState('');
     const [enteredPassword,setEnteredPassword] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
 
     const addUserHandler = (event) =>{
         event.preventDefault();
@@ -23,13 +24,19 @@ const FormInput = (props) => {
         setEnteredPassword(event.target.value);
     };
 
+
+    const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value);
+        props.onSearch(event.target.value); 
+    };
+
     return (
         <div>
             <form onSubmit={addUserHandler}>
                 <div className="center-text">
                     <p className="label">TotalPassword:{props.totalPasswords}</p>
                     <label htmlFor="search">Search:</label>
-                    <input id="search" type="text"/><br/>
+                    <input id="search" type="text" value={searchQuery} onChange={handleSearchChange}/><br/>
                 </div>
                 
                 <label htmlFor="title">Title:</label>

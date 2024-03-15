@@ -4,11 +4,16 @@ import FormInput from "./components/formInput/formInput";
 import UserList from "./components/formInput/userList";
 
 function App() {
-  const [usersList,setUsersList] = useState([]);
-  const addUserHandler = (uTitle,uPassword) =>{
-    setUsersList((prevList) =>{
-      return [...prevList,{title: uTitle, password: uPassword, id: Math.random().toString() },
-      ]
+  const [usersList, setUsersList] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+
+
+  const addUserHandler = (uTitle, uPassword) => {
+    setUsersList((prevList) => {
+      return [
+        ...prevList,
+        { title: uTitle, password: uPassword, id: Math.random().toString() },
+      ];
     });
   };
   const deleteUserHandler = (userId) => {
@@ -28,13 +33,29 @@ function App() {
     });
   };
 
+  const handleSearch = (query) => {
+    if (query.trim() === "") {
+      setFilteredUsers(usersList);
+    } else {
+      setFilteredUsers(
+        usersList.filter((user) =>
+          user.title.toLowerCase().includes(query.toLowerCase())
+        )
+      );
+    }
+  };
+
   return (
     <div>
       <h2 className="center">Password Keeper</h2>
-      <FormInput onAddUser={addUserHandler} totalPasswords={usersList.length} />
+      <FormInput
+        onAddUser={addUserHandler}
+        totalPasswords={filteredUsers.length > 0 ? filteredUsers.length : usersList.length}
+        onSearch={handleSearch}
+      />
       <h3>All Passwords</h3>
       <UserList
-        users={usersList}
+        users={filteredUsers.length > 0 ? filteredUsers : usersList}
         onDelete={deleteUserHandler}
         onEdit={editUserHandler}
       />
