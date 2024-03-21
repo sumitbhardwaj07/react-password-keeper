@@ -2,10 +2,19 @@ import "./App.css";
 import React, { useState } from "react";
 import FormInput from "./components/formInput/formInput";
 import UserList from "./components/formInput/userList";
+import AddUser from "./components/formInput/addUser";
 
 function App() {
   const [usersList, setUsersList] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
+  const [userIsShown, setUserIsShown] = useState(false);
+
+  const showFormHandler = () =>{
+    setUserIsShown(true);
+  }
+  const hideFormHandler = () =>{
+    setUserIsShown(false);
+  }
 
 
   const addUserHandler = (uTitle, uPassword) => {
@@ -48,8 +57,9 @@ function App() {
   return (
     <div>
       <h2 className="center">Password Keeper</h2>
+      {userIsShown && <AddUser onAddUser={addUserHandler} onClose={hideFormHandler} onAdd={showFormHandler}/>}
       <FormInput
-        onAddUser={addUserHandler}
+        onAdd ={showFormHandler}
         totalPasswords={filteredUsers.length > 0 ? filteredUsers.length : usersList.length}
         onSearch={handleSearch}
       />

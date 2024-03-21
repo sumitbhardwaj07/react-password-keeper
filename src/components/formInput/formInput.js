@@ -2,48 +2,27 @@ import React, {useState} from "react";
 import "./formInput.css";
 
 const FormInput = (props) => {
-    const [enteredTitle,setEnteredTitle] = useState('');
-    const [enteredPassword,setEnteredPassword] = useState('');
+    
     const [searchQuery, setSearchQuery] = useState('');
-
-    const addUserHandler = (event) =>{
-        event.preventDefault();
-        if(enteredTitle.trim().length === 0 || enteredPassword.trim().length === 0) {
-            alert('Please fill all the fields');
-            return;
-        }
-        
-        props.onAddUser(enteredTitle,enteredPassword);
-        setEnteredTitle('');
-        setEnteredPassword('');
-    };
-    const titleChangeHandler = (event) =>{
-        setEnteredTitle(event.target.value);
-    };
-    const passwordChangeHandler = (event) =>{
-        setEnteredPassword(event.target.value);
-    };
-
 
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
         props.onSearch(event.target.value); 
     };
+    const handleAddUser = (event) => {
+        event.preventDefault();
+        props.onAdd(); 
+      };
 
     return (
         <div>
-            <form onSubmit={addUserHandler}>
+            <form>
                 <div className="center-text">
                     <p className="label">TotalPassword:{props.totalPasswords}</p>
+                    <button onClick={handleAddUser}>Add New User</button><br/>
                     <label htmlFor="search">Search:</label>
                     <input id="search" type="text" value={searchQuery} onChange={handleSearchChange}/><br/>
                 </div>
-                
-                <label htmlFor="title">Title:</label>
-                <input id="title" type="text" value={enteredTitle} onChange={titleChangeHandler}/><br/>
-                <label htmlFor="password">Password:</label>
-                <input id="password" type="password" value={enteredPassword} onChange={passwordChangeHandler}/><br/>
-                <button type="submit">Add</button>
             </form>
         </div>
     );
